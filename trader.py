@@ -11,24 +11,26 @@ class Trader:
 
 		# Orders to be placed on exchange matching engine
         result = {}
+        LIMIT = 20
 
         '''AMETHYST'''
         order_depth: OrderDepth = state.order_depths["AMETHYST"]
         orders: List[Order] = []
-        position = state.position["AMETHYST"] # size of position in this product
+        position: int = int(state.position["AMETHYST"]) # size of position in this product
 
         print("Buy Order depth : " + str(len(order_depth.buy_orders)) + ", Sell order depth : " + str(len(order_depth.sell_orders)))
 
-        if len(order_depth.sell_orders) != 0 and len(order_depth.buy_orders) != 0:
-            best_ask, best_ask_amount = list(order_depth.sell_orders.items())[0]
-            best_bid, best_bid_amount = list(order_depth.buy_orders.items())[0]
+        if abs(position) <= LIMIT:
+            if len(order_depth.sell_orders) != 0 and len(order_depth.buy_orders) != 0:
+                best_ask, best_ask_amount = list(order_depth.sell_orders.items())[0]
+                best_bid, best_bid_amount = list(order_depth.buy_orders.items())[0]
 
-            # if sell price is lower than buy price, then buy and sell
-            if int(best_ask) < int(best_bid):
-                size = min(-best_ask_amount, best_bid_amount)
-                print("BUY", str(size) + "x", best_ask)
-                orders.append(Order("AMETHYST", best_ask, size))
-                orders.append(Order("AMETHYST", best_bid, -size))
+                # if sell price is lower than buy price, then buy and sell
+                if int(best_ask) < int(best_bid):
+                    size = min(-best_ask_amount, best_bid_amount)
+                    print("BUY", str(size) + "x", best_ask)
+                    orders.append(Order("AMETHYST", best_ask, size))
+                    orders.append(Order("AMETHYST", best_bid, -size))
 
 
         
