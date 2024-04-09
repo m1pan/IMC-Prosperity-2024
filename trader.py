@@ -39,7 +39,7 @@ class Trader:
                     size = ask_diff/5 * (LIMIT - position)
                     print("BUY", str(ask_diff) + "x", size)
                     orders.append(Order("AMETHYST", best_ask, size))
-                    
+
                 # if bid price is higher than 1000, sell
                 if bid_diff > 0:
                     size = bid_diff/5 * (LIMIT + position)
@@ -76,8 +76,8 @@ class Trader:
 
         # String value holding Trader state data required. 
             # It will be delivered as TradingState.traderData on next execution.
-        traderData = "SAMPLE" 
+        # traderData = "SAMPLE" 
         
-				# Sample conversion request. Check more details below. 
-        conversions = 1
-        return result, conversions, traderData
+		# 		# Sample conversion request. Check more details below. 
+        # conversions = 1
+        return result # conversions, traderData
