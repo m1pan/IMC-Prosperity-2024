@@ -25,12 +25,27 @@ class Trader:
                 best_ask, best_ask_amount = list(order_depth.sell_orders.items())[0]
                 best_bid, best_bid_amount = list(order_depth.buy_orders.items())[0]
 
-                # if sell price is lower than buy price, then buy and sell
+                # if sell price is lower than buy price, then buy and sell ; market neutral
                 if int(best_ask) < int(best_bid):
                     size = min(-best_ask_amount, best_bid_amount)
                     print("BUY", str(size) + "x", best_ask)
                     orders.append(Order("AMETHYST", best_ask, size))
                     orders.append(Order("AMETHYST", best_bid, -size))
+                # deviation of bid and ask from 1000
+                ask_diff = 1000 - best_ask
+                bid_diff = best_bid - 1000
+                # if ask price is lower than 1000, buy
+                if ask_diff > 0:
+                    size = ask_diff/5 * (LIMIT - position)
+                    print("BUY", str(ask_diff) + "x", size)
+                    orders.append(Order("AMETHYST", best_ask, size))
+                    
+                # if bid price is higher than 1000, sell
+                if bid_diff > 0:
+                    size = bid_diff/5 * (LIMIT + position)
+                    print("SELL", str(bid_diff) + "x", size)
+                    orders.append(Order("AMETHYST", best_bid, -size))
+                
 
 
         
