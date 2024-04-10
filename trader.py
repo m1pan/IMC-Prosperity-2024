@@ -1,5 +1,5 @@
-from datamodel import OrderDepth, UserId, TradingState, Order
-from typing import List
+from datamodel import OrderDepth, UserId, TradingState, Order, Trade
+from typing import List, Dict
 import string
 import numpy as np
 
@@ -12,11 +12,12 @@ class Trader:
 		# Orders to be placed on exchange matching engine
         result = {}
         LIMIT = 20
+        traderData: Dict[str, Dict] = state.traderData
 
-        '''AMETHYST'''
-        order_depth: OrderDepth = state.order_depths["AMETHYST"]
+        '''AMETHYSTS'''
+        order_depth: OrderDepth = state.order_depths["AMETHYSTS"]
         orders: List[Order] = []
-        position: int = int(state.position["AMETHYST"]) # size of position in this product
+        position: int = int(state.position["AMETHYSTS"]) # size of position in this product
 
         print("Buy Order depth : " + str(len(order_depth.buy_orders)) + ", Sell order depth : " + str(len(order_depth.sell_orders)))
 
@@ -29,8 +30,8 @@ class Trader:
                 if int(best_ask) < int(best_bid):
                     size = min(-best_ask_amount, best_bid_amount)
                     print("BUY", str(size) + "x", best_ask)
-                    orders.append(Order("AMETHYST", best_ask, size))
-                    orders.append(Order("AMETHYST", best_bid, -size))
+                    orders.append(Order("AMETHYSTS", best_ask, size))
+                    orders.append(Order("AMETHYSTS", best_bid, -size))
                 # deviation of bid and ask from 1000
                 ask_diff = 1000 - best_ask
                 bid_diff = best_bid - 1000
@@ -38,18 +39,21 @@ class Trader:
                 if ask_diff > 0:
                     size = ask_diff/5 * (LIMIT - position)
                     print("BUY", str(ask_diff) + "x", size)
-                    orders.append(Order("AMETHYST", best_ask, size))
+                    orders.append(Order("AMETHYSTS", best_ask, size))
 
                 # if bid price is higher than 1000, sell
                 if bid_diff > 0:
                     size = bid_diff/5 * (LIMIT + position)
                     print("SELL", str(bid_diff) + "x", size)
-                    orders.append(Order("AMETHYST", best_bid, -size))
+                    orders.append(Order("AMETHYSTS", best_bid, -size))
                 
+        traderData['own trade'].append( state.own_trades["AMETHYSTS"])
+        traderData['market trade'].append( state.market_trades["AMETHYSTS"])
+
 
 
         
-        result["AMETHYST"] = orders
+        result["AMETHYSTS"] = orders
 
         # '''STARFRUIT'''
         # order_depth: OrderDepth = state.order_depths["STARFRUIT"]
