@@ -48,8 +48,8 @@ class Trader:
                     print("SELL", str(bid_diff) + "x", size)
                     orders.append(Order(symbol, best_bid, -size))
                 
-        traderData['own trade'].append( state.own_trades[symbol])
-        traderData['market trade'].append( state.market_trades[symbol])
+        traderData['own trade'][state.timestamp] = (state.own_trades[symbol])
+        traderData['market trade'][state.timestamp] = ( state.market_trades[symbol])
 
 
 
@@ -84,5 +84,5 @@ class Trader:
         # traderData = "SAMPLE" 
         
 		# 		# Sample conversion request. Check more details below. 
-        # conversions = 1
-        return result # conversions, traderData
+        conversions = 1
+        return result, conversions, traderData
