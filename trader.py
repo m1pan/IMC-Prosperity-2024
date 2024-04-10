@@ -15,7 +15,8 @@ class Trader:
         traderData: Dict[str, Dict] = state.traderData
 
         '''AMETHYSTS'''
-        order_depth: OrderDepth = state.order_depths["AMETHYSTS"]
+        symbol = state.listings["AMETHYSTS"].symbol
+        order_depth: OrderDepth = state.order_depths[symbol]
         orders: List[Order] = []
         position: int = int(state.position["AMETHYSTS"]) # size of position in this product
 
@@ -30,8 +31,8 @@ class Trader:
                 if int(best_ask) < int(best_bid):
                     size = min(-best_ask_amount, best_bid_amount)
                     print("BUY", str(size) + "x", best_ask)
-                    orders.append(Order("AMETHYSTS", best_ask, size))
-                    orders.append(Order("AMETHYSTS", best_bid, -size))
+                    orders.append(Order(symbol, best_ask, size))
+                    orders.append(Order(symbol, best_bid, -size))
                 # deviation of bid and ask from 1000
                 ask_diff = 1000 - best_ask
                 bid_diff = best_bid - 1000
@@ -39,21 +40,21 @@ class Trader:
                 if ask_diff > 0:
                     size = ask_diff/5 * (LIMIT - position)
                     print("BUY", str(ask_diff) + "x", size)
-                    orders.append(Order("AMETHYSTS", best_ask, size))
+                    orders.append(Order(symbol, best_ask, size))
 
                 # if bid price is higher than 1000, sell
                 if bid_diff > 0:
                     size = bid_diff/5 * (LIMIT + position)
                     print("SELL", str(bid_diff) + "x", size)
-                    orders.append(Order("AMETHYSTS", best_bid, -size))
+                    orders.append(Order(symbol, best_bid, -size))
                 
-        traderData['own trade'].append( state.own_trades["AMETHYSTS"])
-        traderData['market trade'].append( state.market_trades["AMETHYSTS"])
+        traderData['own trade'].append( state.own_trades[symbol])
+        traderData['market trade'].append( state.market_trades[symbol])
 
 
 
         
-        result["AMETHYSTS"] = orders
+        result[symbol] = orders
 
         # '''STARFRUIT'''
         # order_depth: OrderDepth = state.order_depths["STARFRUIT"]
