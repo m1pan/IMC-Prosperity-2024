@@ -4,7 +4,7 @@ import string
 import numpy as np
 
 class Trader:
-    
+
     def run(self, state: TradingState):
         print("traderData: " + state.traderData)
         print("Observations: " + str(state.observations))
@@ -14,13 +14,14 @@ class Trader:
         LIMIT = 20
         traderData: Dict[str, Dict] = state.traderData
 
-        '''AMETHYSTS'''
+        # AMETHYSTS
         symbol = state.listings["AMETHYSTS"].symbol
         order_depth: OrderDepth = state.order_depths[symbol]
         orders: List[Order] = []
         position: int = int(state.position["AMETHYSTS"]) # size of position in this product
 
-        print("Buy Order depth : " + str(len(order_depth.buy_orders)) + ", Sell order depth : " + str(len(order_depth.sell_orders)))
+        print("Buy Order depth : " + str(len(order_depth.buy_orders)) + ", Sell order depth : " 
+              + str(len(order_depth.sell_orders)))
 
         if abs(position) <= LIMIT:
             if len(order_depth.sell_orders) != 0 and len(order_depth.buy_orders) != 0:
