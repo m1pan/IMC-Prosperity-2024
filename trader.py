@@ -18,7 +18,10 @@ class Trader:
         symbol = state.listings["AMETHYSTS"].symbol
         order_depth: OrderDepth = state.order_depths[symbol]
         orders: List[Order] = []
-        position: int = int(state.position["AMETHYSTS"]) # size of position in this product
+        try: 
+            position: int = int(state.position["AMETHYSTS"]) # size of position in this product
+        except:
+            position = 0
 
         print("Buy Order depth : " + str(len(order_depth.buy_orders)) + ", Sell order depth : " 
               + str(len(order_depth.sell_orders)))

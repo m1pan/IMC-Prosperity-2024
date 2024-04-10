@@ -18,12 +18,12 @@ listings = {
 
 order_depths = {
 	"PRODUCT1": OrderDepth(
-		buy_orders={10: 7, 9: 5},
-		sell_orders={11: -4, 12: -8}
+		{10: 7, 9: 5},
+		{11: -4, 12: -8}
 	),
 	"PRODUCT2": OrderDepth(
-		buy_orders={142: 3, 141: 5},
-		sell_orders={144: -5, 145: -8}
+		{142: 3, 141: 5},
+		{144: -5, 145: -8}
 	),	
 }
 
@@ -66,4 +66,4 @@ state = TradingState(
 )
 
 trade = Trader()
-trade.run(state)
+results, conversions, traderdata = trade.run(state)
